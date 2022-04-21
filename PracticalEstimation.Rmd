@@ -74,13 +74,13 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 ```{r Options, include=FALSE}
 ### Customized options for this document
 # Add necessary packages here
-Packages <- c("tidyverse", "entropart", "lmodel2")
+Packages <- c("tidyverse", "entropart", "gridExtra", "lmodel2")
 # Install them
 InstallPackages(Packages)
 
 # knitr options
 knitr::opts_chunk$set(
-  cache = FALSE,   # Cache chunk results
+  cache = TRUE,    # Cache chunk results
   echo = FALSE,    # Show/Hide R chunks
   warning = FALSE, # Show/Hide warnings
   message = FALSE, # Show/Hide messages
@@ -358,7 +358,7 @@ The correct process consists of evaluating entropy with its confidence interval 
 Distributions <- c("lnorm", "geom")
 Richness <- c(300, 600)
 SampleSizes <- c(200, 500, 1000, 5000)
-Corrections <- c("UnveilJ", "UnveiliC", "ChaoWangJost", "UnveilC", "GenCov", "ChaoShen", "Grassberger", "ZhangGrabchak", "None")
+Corrections <- c("UnveilJ", "UnveiliC", "ChaoJost", "UnveilC", "GenCov", "ChaoShen", "Grassberger", "ZhangGrabchak", "None")
 q.seq <- c(seq(0, .1, 0.025), .15, seq(.2, .6, 0.1))
 NumberOfSimulations <- 1000
 Alpha <- 0.05
@@ -428,22 +428,28 @@ The average entropy and its first and last 2.5% quantiles were retained to build
 Finally, entropy was transformed into diversity to be plotted.
 
 
-\begin{figure*}
-  \subfloat[Lognormal distribution. The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94\%. \label{Clnorm300-All}]
-  {
-    \includegraphics[width=0.45\textwidth]{Clnorm300-All.eps}
-  }
-  \hfill
-  \subfloat[Geometric distribution. The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69\% \label{Cgeom300-All}]
-  {
-    \includegraphics[width=0.45\textwidth]{Cgeom300-All.eps}
-  }
-  \caption{Estimated \textit{vs} real sample coverage of simulated samples of a (a) lognormal or (b) geometric distribution of 300 species.
-    Sample sizes are between 200 and 5000 individuals.
-    The line represents the fit of a model II (Major Axis method) linear regression.    
-    \label{fig:CAll}}
-\end{figure*}
+(ref:CAll) Accumulation of the number of individuals from the most abundant to the rarest species. The horizontal line corresponds to half the individuals. The vertical line allows reading the corresponding rank of the species. A) Lognormal distribution. The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94%. B) Geometric distribution. The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69%. 
+```{r CAll, fig.cap="(ref:CAll)"}
+library("gridExtra")
 
+# Compare Estimated and actual sample coverages
+ggC <- function(Ps) {
+  RealC <- EstimC  <- numeric()
+  for (Size in min(SampleSizes):max(SampleSizes)) {
+    MCSim <- rCommunity(2, size=Size, NorP=Ps)
+    RealC <- c(RealC, colSums(Ps * (MCSim$Nsi>0)))
+    EstimC <- c(EstimC, MCSim$SampleCoverage.communities)
+  }
+  return(
+    ggplot(data.frame(RealC, EstimC)) +
+      geom_point(aes(x=RealC, y=EstimC)) +
+      geom_abline(slope=1, intercept=0, col="red") +
+      labs(x = "Actual Sample Coverage", y="Estimated Sample Coverage")
+    )
+}
+
+grid.arrange(ggC(Plnorm300), ggC(Pgeom300), nrow = 1)
+```
 
 # Results
 
@@ -463,6 +469,84 @@ Conditionally to the sample size, the relation vanishes but the average estimati
 
 
 ## Entropy and diversity
+
+```{r divprofiles}
+# Function to build the confidence envelope of the estimation
+CommunityProfileBySize <- function(FUN, Ps, q.seq, Size, NumberOfSimulations, Correction, Alpha) 
+{
+  # Create a MetaCommunity made of simulated communities
+  MCSim <- rCommunity(NumberOfSimulations, size=Size, NorP=Ps, CheckArguments = FALSE)
+  ProgressBar <- txtProgressBar(min=0, max=NumberOfSimulations)
+  Sims <- matrix(nrow=NumberOfSimulations, ncol=length(q.seq))
+  # Loops are required for the progress bar, instead of:
+  # Sims <- apply(MCSim$Nsi, 2, function(Nsi) CommunityProfile(FUN, Nsi, q.seq, ...)$y)
+  for (i in 1:NumberOfSimulations) {
+    Sims[i, ] <- sapply(q.seq, function(q) FUN(MCSim$Nsi[, i], q, Correction=Correction, CheckArguments = FALSE))
+    setTxtProgressBar(ProgressBar, i)
+  }
+  Means <- apply(Sims, 2, mean)
+  Vars <- apply(Sims, 2, var)
+  
+  # Quantiles of simulations for each q
+  EstEnvelope <- apply(Sims, 2, quantile, probs = c(Alpha/2, 1-Alpha/2))
+  colnames(EstEnvelope) <- q.seq
+  Profile <- list(x = q.seq,
+                  y = Means,
+                  low = EstEnvelope[1,],
+                  high = EstEnvelope[2,],
+                  var = Vars,
+                  Coverage = MCSim$SampleCoverage.communities
+  )
+  
+  class(Profile) <- "CommunityProfile"
+  return (Profile)
+}
+
+
+# Calculate diversity profiles
+for (Distribution in Distributions) {
+  for (S in Richness) {
+    Ps <- eval(as.name(paste("P", Distribution, S, sep="")))
+    # Real Profile
+    Values <- sapply(q.seq, function(q) Tsallis(Ps, q, CheckArguments = FALSE))
+    # Graphical parameters
+    yLim <- c(0.9*min(Values), 1.1*max(Values))
+  
+    for (Size in SampleSizes) {
+      for (Correction in Corrections) {
+        # Entropy profile
+        CommunityProfileBySize(bcTsallis, Ps, q.seq, Size, NumberOfSimulations, Correction, Alpha) -> Env
+        # Transform entropy into diversity
+        DEnv <- expq.CommunityProfile(Env)
+        DValues <-  sapply(1:length(q.seq), function(i) expq(Values[i], q.seq[i]))
+        # Save the data
+        Env$Real <- Values
+        # Calculate RMSE
+        Env$RMSE <- sqrt((Env$Real-Env$y)^2 + Env$var)/Env$Real
+        assign(paste("E", Distribution, S, "_", Size, Correction, sep=""), Env)
+      }
+    }
+  }
+}
+
+# Plot diversity profiles
+# for (Distribution in Distributions) {
+#   for (S in Richness) {
+#     for (Size in SampleSizes) {
+#       for (Correction in Corrections) {
+#         if (!PlotToScreen) postscript(paste("DP", Distribution, S, "-", Size, Correction, ".eps", sep=""), width = 5, height = 3.2, horizontal=FALSE)
+#         if (!PlotToScreen) par(mar=c(3,4,0,1))
+#         DEnv <- eval(as.name(paste("E", Distribution, S, "_", Size, Correction, sep="")))
+#         plot(DEnv, ylim=c(min(DEnv$Real)*.9, max(DEnv$Real)*1.1), LineWidth=1, main="")
+#         lines(q.seq, DEnv$Real, lwd=2)
+#         if (PlotToScreen) title(paste(Distribution, S, "species -", Size, "ind.", Correction))
+#         if (!PlotToScreen) dev.off()
+#       }
+#     }
+#   }
+# }
+```
+
 
 I estimated the entropy profiles of the lognormal and geometric distributions of 300 and 600 species, sampled at 4 different intensities (200, 500, 1000 and 5000 individuals), by 9 estimators: Chao-Shen, Grassberger, Chao-Jost, Zhang-Grabchak, Generalized Coverage, the three unveiled and the Plug-in.
 The diversity profiles are plotted in the electronic appendices.
