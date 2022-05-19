@@ -112,7 +112,7 @@ Measuring biodiversity requires both a robust theoretical framework [@Patil1982]
 In this paper I focus on species-neutral measures of diversity based on HCDT entropy [@Havrda1967;@Daroczy1970;@Tsallis1988] that fulfill the first requirement.
 Entropy measures the average surprise brought by observing individuals of a community.
 Surprise is a decreasing function of probability dropping to 0 when probability is 1.
-HCDT entropy uses a parameterized surprise function that is the deformed logarithm of order $q$ of the reciprocal of probability[@Marcon2014a].
+HCDT entropy uses a parameterized surprise function that is the deformed logarithm of order $q$ of the reciprocal of probability [@Marcon2014a].
 Traditional measures of diversity, namely the number of species as well as Shannon's and Simpson's indices, are special cases of the HCDT entropy for values of $q$ equal to 0, 1 and 2.
 HCDT entropy should be transformed into Hill numbers [@Hill1973] for better interpretation of the value of diversity as an effective number of species [@Jost2006].
 Hill numbers are simply the deformed exponential of HCDT entropy [@Marcon2014a].
@@ -122,7 +122,7 @@ Negative values of $q$ are not used because of poor mathematical properties of t
 Ordering communities in terms of diversity requires that their profile do not cross [@Tothmeresz1995]; else, declaring a community more diverse than another only holds for a range of values of $q$ reflecting the importance given to rare or frequent species [@Lande2000].
 
 To plot those profiles, diversity must be estimated from the data.
-Estimation bias [I follow the terminology of @Dauby2012] is a well-known issue [@Marcon2014a]. 
+Estimation bias [following the terminology of @Dauby2012] is a well-known issue [@Marcon2014a]. 
 Real data are almost always samples of larger communities, so some species may have been missed. 
 The induced bias on the Simpson entropy is smaller than on the Shannon entropy because the former assigns lower weights to rare species, i.e. the sampling bias is even more important when $q$ decreases.
 Another estimation bias has been widely studied by physicists who generally consider that all species of a given community are known and their probabilities quantified. 
@@ -130,19 +130,23 @@ Their main issue is not at all missing species but the non-linearity of entropy 
 Estimating probabilities at power $q>0$ by the power of their estimator is an important source of underestimation of entropy.
 The need for corrections has generated a considerable literature in ecological statistics and statistical physics.
 
-In this paper, I test the performance of the state-of-the-art estimators when applied to the kind of data ecologists have to deal with.
-I start with simulated distributions that have the advantage of being easily manipulated to generate various sampling intensities and evaluate the bias and root mean square error (RMSE) of the estimators.
-I address the classical models of the literature, namely the lognormal and the geometric distributions.
+This paper tests the performance of the state-of-the-art estimators when applied to the kind of data ecologists have to deal with.
+It starts with simulated distributions that have the advantage of being easily manipulated to generate various sampling intensities and evaluate the bias and root mean square error (RMSE) of the estimators.
+The classical models of the literature, namely the lognormal and the geometric distributions are addressed.
 The lognormal distribution describes, at least roughly, many hyper-diverse ecosystems even though the link between its statistical success and the underlying ecological mechanisms is poorly documented [@Tokeshi1993].
 The geometric distribution is a far more difficult case because it is very uneven: the frequency of rare species is several orders of magnitude smaller than that of the frequent ones, making it impossible to observe with reasonable sampling effort [@Haegeman2013].
-I apply the best-known and best-performing estimators, including three new ones, to those distributions and two actual forest data sets.
-My purpose is to provide recommendations about the estimation technique to choose when facing different types of data and draw general conclusions about the possible accuracy of diversity estimation.
+The best-known and best-performing estimators, including three new ones, are applied to those distributions and two actual forest data sets.
+The purpose of the paper is to provide recommendations about the estimation technique to choose when facing different types of data and draw general conclusions about the possible accuracy of diversity estimation.
 
-Phyloentropy is the sum of HCDT entropy along an ultrametric tree [@Marcon2014b] so estimating it reduces to estimating HCDT entropy.
-Phylodiversity is the deformed exponential of phyloentropy.
-In short, estimating phylodiversity relies on the methods presented here so I will focus on species-neutral diversity for clarity.
+Phylogenetic entropy is the sum of HCDT entropy along an ultrametric tree [@Marcon2014b] so estimating it reduces to estimating HCDT entropy.
+Phylogenetic diversity is then obtained as the deformed exponential of phyloentropy.
+In short, estimating phylodiversity relies on the methods presented here so the paper will focus on species-neutral diversity for clarity.
 
-I used the package *entropart* [@Marcon2014c] for R [@R] for all tests. The R code necessary to reproduce all results is in the electronic appendix.
+All analyses are made whith the package *entropart* [@Marcon2014c] for R [@R].
+This paper comes with a Shiny application available on GitHub [^1] to simulate communities and estimate their diversity.
+
+[^1]: https://github.com/EricMarcon/estimation
+
 
 # Methods
 
@@ -153,7 +157,7 @@ ${s}^{n}_{\nu}$ is considered as a realization of the random variable ${S}^{n}_{
 
 $\pi_\nu$ is the sum of the probabilities $p_s$ of species represented by $\nu$ individuals.
 
-The deformed logarithm formalism [@Tsallis1994} is very convenient to manipulate entropies. 
+The deformed logarithm formalism [@Tsallis1994] is very convenient to manipulate entropies. 
 The deformed logarithm of order $q$ is defined as:
 
 \begin{equation}
@@ -170,11 +174,12 @@ The inverse function of $\ln_q{x}$ is the deformed exponential:
   (\#eq:expq)
 \end{equation}
 
+
 ## Sample coverage
 
 The sample coverage [@Good1953] is the probability for an individual in the community to belong to a species observed in the sample.
 It equals the sums of the probabilities of the observed species.
-It is an essential tool for diversity estimation because it is included in some estimators, e.g. @Chao2003, and it allows the evaluation of the completeness of sampling [@Chao2012b].
+It is an essential tool for diversity estimation because it is included in some estimators, e.g. @Chao2003, and it allows the evaluation of the completeness of the sampling [@Chao2012b].
 Its estimator given by Good is:
 
 \begin{equation}
@@ -182,7 +187,7 @@ Its estimator given by Good is:
   (\#eq:CGood)
 \end{equation}
 
-It is biased [@Zhang2007}, because:
+It is biased [@Zhang2007], because:
 
 \begin{equation}
   C = 1-\frac{{\mathbb E}({S}^{n}_{1}) - \pi_1}{n}
@@ -208,7 +213,7 @@ An almost unbiased estimator has been derived using the information provided by 
   (\#eq:CZhang)
 \end{equation}
 
-I use it in this paper.
+It is used in this paper.
 
 
 ## Estimators of entropy
@@ -227,19 +232,19 @@ The plug-in estimator is useless in hyper-diverse communities because it severel
 Recent progress has been made in estimating the actual distribution of the probability of species by fitting a model of their distribution to the data.
 The distribution of the unobserved species can be added if their number is estimated and a distribution form is chosen.
 @Chao2014c used a two-parameter model based on the estimation of the generalized sample coverage (not detailed here), estimated the total richness with the Chao1 estimator and modeled the unobserved species as a geometric distribution to unveil the complete rank-abundance distribution of an observed community.
-They applied the plug-in estimator this distribution: I'll call it the "Chao-unveiled" estimator.
+They applied the plug-in estimator this distribution: It will be called the "Chao-unveiled" here.
 
-The Chao1 estimator has been built according to the same theoretical approach as that of the unveiled rank-abundance distribution.
+The Chao1 estimator was built according to the same theoretical approach as that of the unveiled rank-abundance distribution.
 It is a lower-bound estimator of the number of species.
 It has been improved by @Chiu2014a who slightly reduced its negative bias with the iChao1 estimator, integrating species represented by 3 and 4 individuals.
-I define the "iChao-unveiled"estimator as a variation on the "Chao-unveiled" estimator, where richness is estimated by the iChao1 estimator.
+The "iChao-unveiled" estimator will be defined here as a variation on the "Chao-unveiled" estimator, where richness is estimated by the iChao1 estimator.
 
 The jackknife estimator [@Burnham1979] has shown good performances to estimate richness when the sampling effort is too low for the Chao1 estimator to perform well [@Brose2003] even though it actually lacks theoretical support [@Cormack1989].
-I test the use of the jackknife estimator, whose order is selected according to the data, to define the "jackknife-unveiled" estimator.
+Estimating species richness with the jackknife estimator, whose order is selected according to the data, defines the "jackknife-unveiled" estimator.
 Using the jackknife estimator to unveil the tail of the abundance distribution was not the intention of @Chao2014c because it is not consistent with their theoretical framework.
 It must be seen here as a merely empirical tool.
 
-The second method relies on the @Horvitz1952 estimator of the weighted sum of a function of its elements, say $\sum_{s}{p_s f(s)}$ when some of them are not observed.
+The second method relies on the @Horvitz1952 estimator of the weighted sum of a function of its elements ${x_1, x_2, ..., x_S}$, say $\sum_{s}{p_s f(x_s)}$ when some of them are not observed.
 An unbiased estimator of the sum is obtained when each term is divided by its probability to be observed $1-(1-p_s)^n$.
 @Chao2003 proposed to combine it with the estimator of the sample coverage: conditionally to the set of observed species, an unbiased estimator [@Ashbridge2000] of $p_s$ is $\tilde{p}_s = \hat{C} \hat{p}_s$.
 Chao and Shen estimated the Shannon entropy; the method has then been extended to HCDT entropy [@Marcon2014a] and similarity-based diversity [@Marcon2014e]:
@@ -249,7 +254,7 @@ Chao and Shen estimated the Shannon entropy; the method has then been extended t
 \end{equation}
 
 A further progress can be done by replacing the conditional estimator of probabilities $\tilde{p}_s = \hat{C} \hat{p}_s$ by that of @Chao2014c.
-Since the improved probability estimator depends on the generalized sample coverage, I'll call the improved Chao-Shen estimator the "generalized coverage"" estimator.
+Since the improved probability estimator depends on the generalized sample coverage, the improved Chao-Shen estimator will be named the "generalized coverage" estimator.
 
 The third method has been derived by @Grassberger1988 who gave a reduced-bias estimator of the value of an integer at power $q$.
 ${p_s^q}$ is written as $n_s^q/n^q$ and $n_s^q$ is estimated [@Marcon2014a] as:
@@ -260,7 +265,8 @@ ${p_s^q}$ is written as $n_s^q/n^q$ and $n_s^q$ is estimated [@Marcon2014a] as:
   + \frac{{\left(-1\right)}^n \mathrm{\Gamma}\left(1+q\right)\sin{\pi q}}{\pi\left(n+1\right)}
 \end{equation}
 
-The estimator of ${p_s^q}$ is simply $\tilde{p}^{q}_{s} = \tilde{n}^{q}_{s}/n^q$. It is plugged into the formula of entropy to obtain the Grassberger estimator:
+The estimator of ${p_s^q}$ is simply $\tilde{p}^{q}_{s} = \tilde{n}^{q}_{s}/n^q$.
+It is plugged into the formula of entropy to obtain the Grassberger estimator:
 
 \begin{equation}
   ^{q}{\tilde{H}}
@@ -298,9 +304,10 @@ I'll call the @Zhang2014 estimator the one based on $\tilde{h}_{q}$:
 
 Some attempts have been made to estimate the remaining bias [@Zhang2013].
 The most achieved one is that of @Chao2015, completing @Chao2013.
-It relies on two assumptions: the total number of species is estimated by the Chao1 estimator and the actual probabilities of unobserved species can be estimated all equal.
+It relies on the estimation of the total number of species by the Chao1 estimator and a few approximations including that the actual probabilities of unobserved species can be assumed almost equal.
 A consequence is that the estimator of the average probability of species sampled once also equals the probability estimator of unobserved species. 
-Its value is noted $A$. It is $2 {s}^{n}_{2} / {\left[\left( n-1 \right) {s}^{n}_{1} +2 {s}^{n}_{2} \right]}$ if singletons and doubletons are present or $2/{\left[\left(n-1\right)\left({s}^{n}_{1} -1\right)+2\right]}$ if doubletons are missing.
+Its value is noted $A$. 
+It is $2 {s}^{n}_{2} / {\left[\left( n-1 \right) {s}^{n}_{1} +2 {s}^{n}_{2} \right]}$ if singletons and doubletons are present or $2/{\left[\left(n-1\right)\left({s}^{n}_{1} -1\right)+2\right]}$ if doubletons are missing.
 The Chao-Jost estimator of HCDT entropy is:
 
 \begin{multline}
@@ -324,7 +331,7 @@ Two methods allow the evaluation of confidence intervals: asymptotic, closed for
 
 Where $t^{n}_{1-\alpha/2}$ is the quantile of a Student distribution with $n$ degrees of freedom at the risk threshold $\alpha$, here 1.96 for all sample sizes and $\alpha=5\%$.
 
-The Zhang-Grabchak estimator is also asymptotically normal and comes with an asymptotic confidence interval [@Zhang2014] implemented in the package \textit{EntropyEstimation} [@Cao2014].
+The Zhang-Grabchak estimator is also asymptotically normal and comes with an asymptotic confidence interval [@Zhang2014] implemented in the package *EntropyEstimation* [@Cao2014].
 
 The theoretical distribution of other estimators is unknown. 
 They must be built by bootstrap techniques: the observed community is re-sampled, say 1000 times, and entropy is calculated each time.
@@ -359,18 +366,19 @@ Distributions <- c("lnorm", "geom")
 Richness <- 300                   # c(300, 600)
 SampleSizes <- 1000               # c(200, 500, 1000, 5000)
 Corrections <- c("UnveilJ", "UnveiliC", "ChaoJost", "UnveilC", "GenCov", "ChaoShen", "Grassberger", "ZhangGrabchak", "None")
-q.seq <-  seq(0, 2, by=.1)        # c(seq(0, .1, 0.025), .15, seq(.2, .6, 0.1))
-NumberOfSimulations <- 100        # 1000
+q.seq <- c(seq(0, .1, 0.025), .15, seq(.2, .6, 0.1))
+NumberOfSimulations <- 1000
 Alpha <- 0.05
 ```
 
 ```{r generate_communities}
 # Log normal: sd similar to BCI
 sdlog <- 2
-# Geometric: each species takes 10% of the remaining stick 
+# Geometric: each species takes 10% of the remaining resources 
 prob <- .1
 
 # rDistribution generates a probability distribution
+library("entropart")
 rDistribution <- function (Distribution, S)
 {
   # Generate the distribution
@@ -382,17 +390,18 @@ rDistribution <- function (Distribution, S)
 }
 
 # Generate distributions
-library("entropart")
 for (Distribution in Distributions)
 {
   for (S in Richness) {
+    # Variable names are e.g. 
+    # Pgeom300 for probabilities of a geometric distribution of 300 species
     assign(paste("P", Distribution, S, sep=""), rDistribution(Distribution, S))
   }
 }
 ```
 
 Comparing the performance of estimators requires simulations of realistic communities.
-I chose to focus on two opposed models making sense in ecology.
+The focus is put on two opposed models making sense in ecology.
 The lognormal distribution [@Preston1948] fits well species-rich communities for several reasons, including populations dynamics [@Engen1996], niche apportionment [@Bulmer1974], or even statistical physics arguments [@Pueyo2007;@Dewar2008].
 It is often well fitted empirically [@Tokeshi1990] even though it has been questioned theoretically [@Williamson2005].
 The local community distribution according to the neutral theory [@Volkov2003] is not lognormal but departs from it very moderately.
@@ -403,7 +412,7 @@ In this model, the first species is represented by a part $p$ of the total resou
 The second one has the same part $p$ of the remaining resources, and so on.
 Finally, probabilities are normalized to be proportional to the resources taken.
 
-(ref:SpeciesDistributions) Rank-Abundance curves of 300 species following a lognormal (top curve) or a geometric distribution (straight line). The red lines are the fitted models.
+(ref:SpeciesDistributions) Rank-Abundance curves of 300 species following a lognormal (green, top curve) or a geometric distribution (red, straight line). The solid lines are the fitted models.
 ```{r SpeciesDistributions, fig.cap="(ref:SpeciesDistributions)"}
 tibble(
   Rank = seq_len(300), 
@@ -424,10 +433,9 @@ tibble(Rank = seq_len(300), geom=fitted_geom, lnorm=fitted_ln) %>%
   theme(legend.position = "none")
 ```
 
-I generated four artificial communities following those distributions.
+Artificial communities following those distributions are generated.
 Figure \@ref(fig:SpeciesDistributions) presents a lognormal one, with log-standard-deviation equal to 2 (typical of the distribution of tree species in a rainforest) and a geometric distribution with parameter $p=0.1$.
 Both contain 300 species.
-The other two distributions have identical parameters except for the number of species augmented to 600.
 
 ## Evaluation of the performance of estimators
 
@@ -439,14 +447,23 @@ The average entropy and its first and last 2.5% quantiles were retained to build
 Finally, entropy was transformed into diversity to be plotted.
 
 
-(ref:CAll) Accumulation of the number of individuals from the most abundant to the rarest species. The horizontal line corresponds to half the individuals. The vertical line allows reading the corresponding rank of the species. A) Lognormal distribution. The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94%. B) Geometric distribution. The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69%. 
+
+# Results
+
+Simulations of independent sampling of individuals in real communities are multinomial samples of various sizes in the chosen species distributions.
+Sample sizes are between 200 and 5000 individuals to cover a range from obvious undersampling to a high-effort inventory: 5000 individuals correspond to 9 to 10 ha of forest.
+
+
+## Sample coverage
+
+(ref:CAll) Estimated vs real sample coverage of simulated samples of a lognormal (a) or geometric (b) distribution of 300 species. Sample sizes are between 200 and 5000 individuals. The line represents the fit of a model II (Major Axis method) linear regression. a) Lognormal distribution: The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94%. b) Geometric distribution: The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69%.
 ```{r CAll, fig.cap="(ref:CAll)"}
 library("gridExtra")
 
 # Compare Estimated and actual sample coverages
-ggC <- function(Ps) {
+ggC <- function(Ps, SampleSizes) {
   RealC <- EstimC  <- numeric()
-  for (Size in min(SampleSizes):max(SampleSizes)) {
+  for (Size in SampleSizes) {
     MCSim <- rCommunity(2, size=Size, NorP=Ps)
     RealC <- c(RealC, colSums(Ps * (MCSim$Nsi>0)))
     EstimC <- c(EstimC, MCSim$SampleCoverage.communities)
@@ -459,24 +476,18 @@ ggC <- function(Ps) {
     )
 }
 
-grid.arrange(ggC(Plnorm300), ggC(Pgeom300), nrow = 1)
+grid.arrange(
+  ggC(Plnorm300, 200:5000)  + labs(tag = "a"),
+  ggC(Pgeom300, 200:5000) + labs(tag = "b"), 
+  nrow = 1
+  )
 ```
 
-# Results
-
-I drew multinomial samples of various sizes in the chosen species distributions, simulating a real, independent sampling of individuals.
-Sample sizes are between 200 and 5000 individuals to cover a range from obvious undersampling to a high-effort inventory: 5000 individuals correspond to 9 to 10~ha of forest.
-
-
-## Sample coverage
-
-I first evaluated the performance of the estimator of sample coverage.
+Performances of the estimator of sample coverage are evaluated first. 
 2 communities of each size between 200 and 5000 individuals were sampled in each typical distribution.
 The real and estimated sample coverages are compared on figure \@ref(fig:CAll).
 The estimation of sample coverage is very efficient.
 A model II linear regression [@Legendre2014] validated the accuracy of the estimation.
-
-Conditionally to the sample size, the relation vanishes but the average estimation is very close to the average actual value: as predicted by the theory, the estimation bias is very small (Figures \@ref(fig:CbySize300) and \@ref(fig:CbySize600)).
 
 
 ## Entropy and diversity
@@ -520,9 +531,7 @@ for (Distribution in Distributions) {
     Ps <- eval(as.name(paste("P", Distribution, S, sep="")))
     # Real Profile
     Values <- sapply(q.seq, function(q) Tsallis(Ps, q, CheckArguments = FALSE))
-    # Graphical parameters
-    yLim <- c(0.9*min(Values), 1.1*max(Values))
-  
+
     for (Size in SampleSizes) {
       for (Correction in Corrections) {
         # Entropy profile
@@ -534,59 +543,14 @@ for (Distribution in Distributions) {
         Env$Real <- Values
         # Calculate RMSE
         Env$RMSE <- sqrt((Env$Real-Env$y)^2 + Env$var)/Env$Real
+        # Variable names are e.g. 
+        # Elnorm300_1000UnveilJ for the entropy profile of a lognormal distribution 
+        # of 300 species sampled by 1000 individuals and estimated by UnveilJ
         assign(paste("E", Distribution, S, "_", Size, Correction, sep=""), Env)
       }
     }
   }
 }
-
-# Plot diversity profiles
-# for (Distribution in Distributions) {
-#   for (S in Richness) {
-#     for (Size in SampleSizes) {
-#       for (Correction in Corrections) {
-#         if (!PlotToScreen) postscript(paste("DP", Distribution, S, "-", Size, Correction, ".eps", sep=""), width = 5, height = 3.2, horizontal=FALSE)
-#         if (!PlotToScreen) par(mar=c(3,4,0,1))
-#         DEnv <- eval(as.name(paste("E", Distribution, S, "_", Size, Correction, sep="")))
-#         plot(DEnv, ylim=c(min(DEnv$Real)*.9, max(DEnv$Real)*1.1), LineWidth=1, main="")
-#         lines(q.seq, DEnv$Real, lwd=2)
-#         if (PlotToScreen) title(paste(Distribution, S, "species -", Size, "ind.", Correction))
-#         if (!PlotToScreen) dev.off()
-#       }
-#     }
-#   }
-# }
-```
-
-
-I estimated the entropy profiles of the lognormal and geometric distributions of 300 and 600 species, sampled at 4 different intensities (200, 500, 1000 and 5000 individuals), by 9 estimators: Chao-Shen, Grassberger, Chao-Jost, Zhang-Grabchak, Generalized Coverage, the three unveiled and the Plug-in.
-The diversity profiles are plotted in the electronic appendices.
-
-(ref:Profiles) Diversity profiles estimated from 1000 random samples of 1000 individuals from a lognormal community of 300 species. The black line represents the real diversity (starting from $^{0}{D} \approx 300$). The jackknife-unveiled estimator is plotted by the red line ($^{0}{\hat{D}} \approx 250$). Its confidence interval (red shade) is very wide. The Chao-Jost estimator (blue line: $^{0}{\hat{D}} \approx 200$) is more biased downward but its confidence interval (blue shade) is much smaller.
-```{r Profiles, fig.cap="(ref:Profiles)"}
-profile_ChaoJost <- tibble(
-  q=Elnorm300_1000ChaoJost$x, 
-  diversity=Elnorm300_1000ChaoJost$y,
-  diversity_low=Elnorm300_1000ChaoJost$low,
-  diversity_high=Elnorm300_1000ChaoJost$high,
-  )
-profile_UnveilJ <- tibble(
-  q=Elnorm300_1000UnveilJ$x, 
-  diversity=Elnorm300_1000UnveilJ$y,
-  diversity_low=Elnorm300_1000UnveilJ$low,
-  diversity_high=Elnorm300_1000UnveilJ$high,
-  )
-profile_real <- tibble(
-  q=Elnorm300_1000UnveilJ$x, 
-  diversity=Elnorm300_1000ChaoJost$Real)
-
-ggplot() +
-  geom_line(data=profile_ChaoJost, mapping=aes(x=q, y=diversity), col="blue") +
-  geom_line(data=profile_ChaoJost, mapping=aes(x=q, y=diversity), col="blue") +
-  geom_ribbon(data=profile_ChaoJost, mapping=aes(x=q, ymin=diversity_low, ymax=diversity_high), alpha=0.2, fill="blue") +
-  geom_line(data=profile_UnveilJ, mapping=aes(x=q, y=diversity), col="red") +
-  geom_ribbon(data=profile_UnveilJ, mapping=aes(x=q, ymin=diversity_low, ymax=diversity_high), alpha=0.2, fill="red") +
-  geom_line(data=profile_real, mapping=aes(x=q, y=diversity), col="black")
 ```
 
 The root mean square error of the estimators is shown on figure \@ref(fig:RMSE) for the lognormal and the geometric distributions with 300 species when 1000 individuals are sampled, a typical tropical forest inventory of trees.
@@ -596,7 +560,7 @@ The Chao-Jost estimator systematically outperforms the Zhang-Grabchak estimator 
 Its complementary estimation is not paid by increased variance.
 The Grassberger estimator is totally inefficient for low values of $q$ as already noticed by @Marcon2014a.
 The generalized coverage estimator outperforms Chao-Shen because of its better estimation of conditional probabilities.
-The Chao-unveiled estimator is almost confused with the Chao-jOST estimator.
+The Chao-unveiled estimator is almost confused with the Chao-Jost estimator.
 Both are outperformed by the iChao-unveiled estimator because it improves the estimation of the number of species.
 The jackknife-unveiled estimator is more flexible than the previous ones to estimate the number of species.
 The order of the jackknife estimator it uses changes between simulations, causing an excessive variance for $q<0.1$.
@@ -606,7 +570,7 @@ Results are consistent whatever the model.
 The general pattern is a poor estimation of low orders of diversity, and a quite accurate estimation of high orders, as previously shown by @Haegeman2013.
 The RMSE varies a lot according to the model.
 
-(ref:RMSE) Estimated relative RMSE of the estimators of diversity based on 1000 samples of 1000 individuals of each typical distribution (lognormal and geometric) of 300 species. The RMSE is normalized by the actual diversity. It is quite high for low orders of diversity, especially for the geometric distribution. Values of $q$ over 0.6 are not shown because all estimators perform similarly well. The legend lists the estimators in the increasing order of RMSE for $q>0.1$, where the estimator with the lowest RMSE is the jackknife-unveiled one, closely followed by the iChao-unveiled and Chao-Jost. Close to $q=0$, the jackknife-unveiled estimator has a higher variance making it the least reliable estimator.
+(ref:RMSE) Estimated relative RMSE of the estimators of diversity based on 1000 samples of 1000 individuals of each typical distribution: lognormal (a) and geometric (b) of 300 species. The RMSE is normalized by the actual diversity. It is quite high for low orders of diversity, especially for the geometric distribution. Values of $q$ over 0.6 are not shown because all estimators perform similarly well. The legend lists the estimators in the increasing order of RMSE for $q>0.1$, where the estimator with the lowest RMSE is the jackknife-unveiled one, closely followed by the iChao-unveiled and Chao-Jost. Close to $q=0$, the jackknife-unveiled estimator has a higher variance making it the least reliable estimator.
 ```{r RMSE, fig.cap="(ref:RMSE)", out.width = '90%'}
 # Lognormal
 RMSE <- tibble(q=q.seq)
@@ -642,15 +606,42 @@ RMSE %>%
   geom_line(aes(x=q, y=value, color=Correction, lty=Correction)) ->
   ggRMSE_Egeom300_1000
 grid.arrange(
-  ggRMSE_Elnorm300_1000 + theme(legend.position = "none"), 
-  ggRMSE_Egeom300_1000 + theme(legend.position = "none"),
+  ggRMSE_Elnorm300_1000 + theme(legend.position = "none") + labs(tag = "a"), 
+  ggRMSE_Egeom300_1000 + theme(legend.position = "none") + labs(tag = "b"),
   gg_legend, 
   nrow = 1, 
   widths=c(0.4, 0.4, 0.2))
 ```
 
-I am continuing the analysis with the best two estimators: Chao-Jost and jackknife-unveiled, ignoring the iChao-unveiled estimator which takes place between them but is too similar to the jackknife-unveiled to bring decisive arguments for the discussion.
+The discussion will focus on the best two estimators: Chao-Jost and jackknife-unveiled, ignoring the iChao-unveiled estimator which takes place between them but is too similar to the jackknife-unveiled to bring decisive arguments for the discussion.
 Figure \@ref(fig:Profiles) shows their profiles for a 1000-individual sample of a lognormal distribution of 300 species, with their confidence intervals.
+
+(ref:Profiles) Diversity profiles estimated from 1000 random samples of 1000 individuals from a lognormal community of 300 species. The black line represents the real diversity (starting from $^{0}{D} \approx 300$). The jackknife-unveiled estimator is plotted by the red line ($^{0}{\hat{D}} \approx 250$). Its confidence interval (red shade) is very wide. The Chao-Jost estimator (blue line: $^{0}{\hat{D}} \approx 200$) is more biased downward but its confidence interval (blue shade) is much smaller.
+```{r Profiles, fig.cap="(ref:Profiles)"}
+profile_ChaoJost <- tibble(
+  q=Elnorm300_1000ChaoJost$x, 
+  diversity=Elnorm300_1000ChaoJost$y,
+  diversity_low=Elnorm300_1000ChaoJost$low,
+  diversity_high=Elnorm300_1000ChaoJost$high,
+  )
+profile_UnveilJ <- tibble(
+  q=Elnorm300_1000UnveilJ$x, 
+  diversity=Elnorm300_1000UnveilJ$y,
+  diversity_low=Elnorm300_1000UnveilJ$low,
+  diversity_high=Elnorm300_1000UnveilJ$high,
+  )
+profile_real <- tibble(
+  q=Elnorm300_1000UnveilJ$x, 
+  diversity=Elnorm300_1000ChaoJost$Real)
+
+ggplot() +
+  geom_line(data=profile_ChaoJost, mapping=aes(x=q, y=diversity), col="blue") +
+  geom_line(data=profile_ChaoJost, mapping=aes(x=q, y=diversity), col="blue") +
+  geom_ribbon(data=profile_ChaoJost, mapping=aes(x=q, ymin=diversity_low, ymax=diversity_high), alpha=0.2, fill="blue") +
+  geom_line(data=profile_UnveilJ, mapping=aes(x=q, y=diversity), col="red") +
+  geom_ribbon(data=profile_UnveilJ, mapping=aes(x=q, ymin=diversity_low, ymax=diversity_high), alpha=0.2, fill="red") +
+  geom_line(data=profile_real, mapping=aes(x=q, y=diversity), col="black")
+```
 
 
 
@@ -668,22 +659,22 @@ Haegeman *et al.* showed that this remains true for $q \geq 1$, even when geomet
 ## The sample coverage is not always the good indicator of the quality of estimation
 
 The sample coverage can not be used as a proxy for how much an estimate of diversity can be relied upon.
-At the same sampling effort, the sample coverage appears to be higher for the geometric distribution (Figures \@ref(fig:CbySize300) and \@ref(fig:CbySize600).
-Far more species are not sampled than in a lognormal distribution, but their total probability is smaller.
-For example, samples of 200 individuals drawn in 300-species geometric and lognormal communities yield an average estimation of 54 and 149 species by the jackknife-unveiled estimator, but the respective sample coverages are over 95% for the geometric distribution versus around 81% for the lognormal one.
+At the same sampling effort, the sample coverage appears to be higher for the geometric distribution: far more species are not sampled than in a lognormal distribution, but their total probability is smaller.
+For example, samples of 200 individuals drawn in 300-species geometric and lognormal communities yield an average estimation of 54 and 149 species by the jackknife-unveiled estimator, but the respective sample coverages are over 95% for the geometric distribution versus around 81% for the lognormal one. The estimation bias of the geometric distribution is thus much greater for low orders of diversity even though the sample coverage is higher.
 
-The estimation bias is thus much greater for low orders of diversity even though the sample coverage is higher.
-@Chao2012b argue in favor of the sample coverage as a better measure of the sampling effort than the sample size.
-I agree as long as the underlying distribution of communities is the same: then, standardizing the sampling effort by the sample coverage is pertinent.
+@Chao2012b argue in favor of the sample coverage as a better measure of the sampling effort than the sample size: this must be understood as long as the underlying distribution of communities is the same.
+Then, standardizing the sampling effort by the sample coverage is pertinent.
 
 
 ## Comparing the diversity of real communities with different distributions remains intractable
 
-When the number of species of the theoretical distributions is doubled, everything else equal, the sampling bias increases (compare figures \@ref(fig:DP300ChaoWangJost) and \@ref(fig:DP600ChaoWangJost).
-With the same sampling effort, the coverage of the lognormal distribution decreases (compare figures \@ref(fig:CbySize300) and \@ref(fig:CbySize600), left columns).
-Doubling the effort brings both the sample coverage and the bias back to their previous level, with a reduced variance (compare figures \@ref(fig:DP600ChaoWangJost-ln1000) and \@ref(fig:DP300ChaoWangJost-ln500).
+When the number of species of the theoretical distributions is doubled, everything else equal, the sampling bias increases.
+With the same sampling effort, the coverage of the lognormal distribution decreases.
+Doubling the effort brings both the sample coverage and the bias back to their previous level, with a reduced variance.
+These operations can be reproduced with the Shiny application provided with the paper.
 
-This is a very simple and intuitive behavior, but it is completely different with the geometric distribution: the sample coverage does not change when richness is doubled (compare figures \@ref(fig:CbySize300) and \@ref(fig:CbySize600), right columns) because the probabilities of the 300 rarest species are negligible. Doubling the sample size does not restore the bias level (compare figures \@ref(fig:DP600ChaoWangJost-geom1000) and \@ref(fig:DP300ChaoWangJost-geom500)).
+This is a very simple and intuitive behavior, but it is completely different with the geometric distribution: the sample coverage does not change when richness is doubled because the probabilities of the 300 rarest species are negligible. 
+Doubling the sample size does not restore the bias level.
 An extensive and rigorous analysis of the influence of the parameters of the theoretical distributions (beyond manipulating the number of species) is not the scope of this paper, but this simple example shows that no general and simple rules are available to compare the low-order diversity of communities of different nature.
 
 
@@ -691,7 +682,7 @@ An extensive and rigorous analysis of the influence of the parameters of the the
 
 The lower $q$, the more difficult the estimation is, but the estimation of the number of species has been long studied and simple rules of decision have been proposed [@Burnham1979;@Brose2003] to choose the most appropriate order of the jackknife estimator.
 Burnham and Overton derived a selection procedure to obtain the order allowing to minimize the RMSE of the estimation of the number of species. 
-It is implemented in the package \textit{SPECIES} [@Wang2011} for R.
+It is implemented in the package *SPECIES* [@Wang2011} for R.
 Brose *et al.* showed (empirically) hat the first-order jackknife is selected when the sample completeness [terminology by @Beck2010], i.e. the proportion of observed species $(S-{s}^{n}_{0})/S$ is over 3/4 (precisely 74% in their paper).
 When it is less, higher orders have less bias but more variance.
 It is easy to estimate the number of species of an actual sample this way and compare it to the Chao1 estimator.
@@ -714,7 +705,7 @@ So, the estimators presented here may not be far from the optimum trade-off (les
 
 # Application to real data
 
-(ref:BCIProfile) Estimated diversity profile of the tree species of the BCI 50-ha plot. The shaded zone is the 95% confidence interval of the estimation.
+(ref:BCIProfile) Estimated diversity profile of the tree species of the BCI 50-ha plot. The shaded area is the 95% confidence interval of the estimation.
 ```{r BCIProfile, fig.cap="(ref:BCIProfile)"}
 library("vegan")
 data(BCI)
@@ -725,11 +716,11 @@ autoplot(DPBCI)
 ```
 
 
-I now estimate the diversity of two real forest plots.
+The diversity of two real forest plots is estimated now.
 The first case is Barro Colorado Island's 50-ha plot of tropical forest, whose inventory data of trees over 10~cm diameter at breast height are available in the package *vegan* [@Oksanen2012] for R.
 225 species have been sampled, with a quite good fit to a lognormal distribution. 
 The sample size is over 20000 individuals, the sample coverage is over 99.9%.
-Estimating the number of species with the Chao1 (239 species) or the jackknife 1 (244) estimators gives very similar results.
+Estimating the number of species with the Chao1 or the jackknife 1 estimators gives very similar results: 239 and 244 species.
 This is an unusually large dataset, whose diversity estimation (Figure \@ref(fig:BCIProfile)) is quite easy.
 
 The best estimator is Chao-Jost since the Chao1 estimator is appropriate for the number of species.
@@ -744,11 +735,11 @@ autoplot(DPP18)
 ```
 
 The second example takes place at the other extreme of sampling intensity.
-A 1-ha plot (plot 18) of tropical forest in the experimental forest of Paracou, French Guiana [@Gourlet-Fleury2004], has been inventoried.
+A 1-ha plot (plot 18) of tropical forest in the experimental forest of Paracou, French Guiana [@Gourlet-Fleury2004], was inventoried.
 Data are available in the package *entropart* for R.
 Only 481 trees over 10 cm diameter at breast height have been sampled.
 They belong to 149 species.
-The sample coverage is 84.6$\pm$4.4%.
+The sample coverage is $84.6 \pm 4.4\%$.
 The estimated number of species is 254 according to Chao1, but the appropriate Jackknife estimator (of order 3) returns 309 species.
 Clearly, the sampling effort is not sufficient for an accurate estimation: the sample coverage is too low and the estimation of the number of species too uncertain.
 With no doubt, the Chao-Jost estimator will severely underestimate diversity.
@@ -757,13 +748,13 @@ The jackknife-unveiled estimator is the best choice.
 Its confidence interval is very wide up to $q=0.3$ (Figure \@ref(fig:P18Profile)).
 Over $q=0.5$, the simulations above showed that the estimator has a very low variability, so the confidence interval is due to the uncertainty of the sampling only.
 At lower orders of diversity, the estimator's uncertainty amplifies it so the estimation is not reliable.
-In this case, the very little accuracy of the jackknife-unveiled estimator (the number of species is estimated between 237 and 439) is preferable to the far smaller confidence interval provided by a less variable but more biased estimator such as Chao-Jost that would probably not contain the actual values of low-order diversity (Figure \@ref(fig:DP300ChaoWangJost-ln50)).
+In this case, the very little accuracy of the jackknife-unveiled estimator (the number of species is estimated between 237 and 439) is preferable to the far smaller confidence interval provided by a less variable but more biased estimator such as Chao-Jost that would probably not contain the actual values of low-order diversity (as in figure \@ref(fig:Profiles)).
 
 
 
 # Conclusion
 
-I have tried to evaluate the performance of diversity estimation in real conditions with simulation studies covering a reasonable set of models.
+This paper tried to evaluate the performance of diversity estimation in real conditions with simulation studies covering a reasonable set of models.
 Unsurprisingly, estimating diversity is more difficult when the species distribution has a heavier tail and the number of species is greater.
 As of the state of the art, the recommendation is to apply the Chao-Jost, the iChao-unveiled or the jackknife-unveiled estimator and consider diversity of order lower than 0.5 with caution.
 
@@ -777,8 +768,6 @@ The *entropart* package for R allows computing species-neutral diversity and phy
 # Acknowledgments
 
 This work has benefited from an "Investissement d'Avenir" grant managed by Agence Nationale de la Recherche (CEBA, ref. ANR-10-LABX-25-01).
-
-I wish to thank the participants of the Anaee France Biodiversity group meeting in Moulis (February 2015) for fruitful discussions that motivated this paper.
 
 
 
