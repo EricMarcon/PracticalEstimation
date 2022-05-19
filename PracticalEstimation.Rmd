@@ -311,7 +311,7 @@ It is $2 {s}^{n}_{2} / {\left[\left( n-1 \right) {s}^{n}_{1} +2 {s}^{n}_{2} \rig
 The Chao-Jost estimator of HCDT entropy is:
 
 \begin{multline}
-  {q}{\tilde{H}}
+  ^{q}{\tilde{H}}
     = \frac{1}{q-1} [ 1 -\tilde{h}_q \\
     -\frac{{s}^{n}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum^{n-1}_{r=0}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
 \end{multline}
@@ -457,7 +457,7 @@ Sample sizes are between 200 and 5000 individuals to cover a range from obvious 
 ## Sample coverage
 
 (ref:CAll) Estimated vs real sample coverage of simulated samples of a lognormal (a) or geometric (b) distribution of 300 species. Sample sizes are between 200 and 5000 individuals. The line represents the fit of a model II (Major Axis method) linear regression. a) Lognormal distribution: The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94%. b) Geometric distribution: The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69%.
-```{r CAll, fig.cap="(ref:CAll)"}
+```{r CAll, fig.cap="(ref:CAll)", fig.env='figure*', fig.asp=.5}
 library("gridExtra")
 
 # Compare Estimated and actual sample coverages
@@ -571,7 +571,7 @@ The general pattern is a poor estimation of low orders of diversity, and a quite
 The RMSE varies a lot according to the model.
 
 (ref:RMSE) Estimated relative RMSE of the estimators of diversity based on 1000 samples of 1000 individuals of each typical distribution: lognormal (a) and geometric (b) of 300 species. The RMSE is normalized by the actual diversity. It is quite high for low orders of diversity, especially for the geometric distribution. Values of $q$ over 0.6 are not shown because all estimators perform similarly well. The legend lists the estimators in the increasing order of RMSE for $q>0.1$, where the estimator with the lowest RMSE is the jackknife-unveiled one, closely followed by the iChao-unveiled and Chao-Jost. Close to $q=0$, the jackknife-unveiled estimator has a higher variance making it the least reliable estimator.
-```{r RMSE, fig.cap="(ref:RMSE)", out.width = '90%'}
+```{r RMSE, fig.cap="(ref:RMSE)", fig.env='figure*', fig.asp=.4}
 # Lognormal
 RMSE <- tibble(q=q.seq)
 for (Correction in Corrections) {
