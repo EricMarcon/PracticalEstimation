@@ -34,6 +34,7 @@ jobs:
           Rscript -e 'memoiR::build_githubpages()'
           cp *.tex docs
           cp *.log docs
+          cp *.aux docs
       - name: Upload artifact
         if: always()
         uses: actions/upload-artifact@v1
