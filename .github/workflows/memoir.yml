@@ -28,8 +28,12 @@ jobs:
         run: |
           RMD_PATH=($(ls | grep "[.]Rmd$"))
           Rscript -e 'for (file in commandArgs(TRUE)) rmarkdown::render(file, "all")' ${RMD_PATH[*]}
+      - name: Move files to docs
+        if: always()
+        run: |
           Rscript -e 'memoiR::build_githubpages()'
       - name: Upload artifact
+        if: always()
         uses: actions/upload-artifact@v1
         with:
           name: ghpages
