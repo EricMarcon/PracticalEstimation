@@ -32,9 +32,7 @@ jobs:
         if: always()
         run: |
           Rscript -e 'memoiR::build_githubpages()'
-          cp *.tex docs
-          cp *.log docs
-          cp *.aux docs
+          cp PracticalEstimation.* docs
       - name: Upload artifact
         if: always()
         uses: actions/upload-artifact@v1
