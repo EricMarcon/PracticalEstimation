@@ -30,14 +30,14 @@ toc-depth: 3
 fontsize: 10pt
 always_allow_html: yes
 output:
-  bookdown::html_document2:
-    toc: yes
-    toc_float: yes
   bookdown::pdf_book:
     template: latex/template.tex
     citation_package: natbib
     latex_engine: xelatex
     keep_tex: yes
+  bookdown::html_document2:
+    toc: yes
+    toc_float: yes
 ---
 
 ```{r DoNotModify, include=FALSE}
@@ -143,14 +143,15 @@ Phylogenetic diversity is then obtained as the deformed exponential of phyloentr
 In short, estimating phylodiversity relies on the methods presented here so the paper will focus on species-neutral diversity for clarity.
 
 All analyses are made whith the package *entropart* [@Marcon2014c] for R [@R].
-This paper comes with a Shiny application available on GitHub [^1] to simulate communities and estimate their diversity.
+This paper comes with a Shiny application available on GitHub[^1] to simulate communities and estimate their diversity.
 
 [^1]: https://github.com/EricMarcon/estimation
 
 
 # Methods
 
-Consider a community of species indexed by $s=1,\ 2,\dots ,S$. $n_{s}$ is the number of individuals of species $s$ sampled in the community, $n=\sum_s{n_{s}}$ the total number of sampled individuals. 
+Consider a community of species indexed by $s$. 
+$n_{s}$ is the number of individuals of species $s$ sampled in the community, $n=\sum_s{n_{s}}$ the total number of sampled individuals. 
 The (unknown) probability $p_{s}$ for an individual to belong to species $s$ is estimated by ${\hat{p}}_{s}={n_{s}}/{n}$.
 The number of species represented by $\nu$ individuals in the sample of size $n$ is ${s}^{n}_{\nu}$, so ${s}^{n}_{0}$ if the (unknown) number of unobserved species considering the sampling effort.
 ${s}^{n}_{\nu}$ is considered as a realization of the random variable ${S}^{n}_{\nu}$ so it is used to estimate its expectation ${\mathbb E}({S}^{n}_{\nu})$.
@@ -457,7 +458,7 @@ Sample sizes are between 200 and 5000 individuals to cover a range from obvious 
 ## Sample coverage
 
 (ref:CAll) Estimated vs real sample coverage of simulated samples of a lognormal (a) or geometric (b) distribution of 300 species. Sample sizes are between 200 and 5000 individuals. The line represents the fit of a model II (Major Axis method) linear regression. a) Lognormal distribution: The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94%. b) Geometric distribution: The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69%.
-```{r CAll, fig.cap="(ref:CAll)", fig.env='figure*', fig.asp=.5}
+```{r CAll, fig.cap="(ref:CAll)", fig.env='figure*', out.width = '', fig.asp=.5}
 library("gridExtra")
 
 # Compare Estimated and actual sample coverages
@@ -571,7 +572,7 @@ The general pattern is a poor estimation of low orders of diversity, and a quite
 The RMSE varies a lot according to the model.
 
 (ref:RMSE) Estimated relative RMSE of the estimators of diversity based on 1000 samples of 1000 individuals of each typical distribution: lognormal (a) and geometric (b) of 300 species. The RMSE is normalized by the actual diversity. It is quite high for low orders of diversity, especially for the geometric distribution. Values of $q$ over 0.6 are not shown because all estimators perform similarly well. The legend lists the estimators in the increasing order of RMSE for $q>0.1$, where the estimator with the lowest RMSE is the jackknife-unveiled one, closely followed by the iChao-unveiled and Chao-Jost. Close to $q=0$, the jackknife-unveiled estimator has a higher variance making it the least reliable estimator.
-```{r RMSE, fig.cap="(ref:RMSE)", fig.env='figure*', fig.asp=.4}
+```{r RMSE, fig.cap="(ref:RMSE)", fig.env='figure*', out.width = '', fig.asp=.4}
 # Lognormal
 RMSE <- tibble(q=q.seq)
 for (Correction in Corrections) {
