@@ -319,14 +319,15 @@ The purpose of the paper is to provide recommendations about the estimation tech
 Phylogenetic diversity is then obtained as the deformed exponential of phyloentropy.
 In short, estimating phylodiversity relies on the methods presented here so the paper will focus on species-neutral diversity for clarity.</p>
 <p>All analyses are made whith the package <em>entropart</em> <span class="citation">(Marcon and Hérault 2015b)</span> for R <span class="citation">(R Core Team 2022)</span>.
-This paper comes with a Shiny application available on GitHub <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> to simulate communities and estimate their diversity.</p>
+This paper comes with a Shiny application available on GitHub<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> to simulate communities and estimate their diversity.</p>
 </div>
 <div id="methods" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Methods</h1>
-<p>Consider a community of species indexed by <span class="math inline">\(s=1,\ 2,\dots ,S\)</span>. <span class="math inline">\(n_{s}\)</span> is the number of individuals of species <span class="math inline">\(s\)</span> sampled in the community, <span class="math inline">\(n=\sum_s{n_{s}}\)</span> the total number of sampled individuals.
+<p>Consider a community of species indexed by <span class="math inline">\(s\)</span>.
+<span class="math inline">\(n_{s}\)</span> is the number of individuals of species <span class="math inline">\(s\)</span> sampled in the community, <span class="math inline">\(n=\sum_s{n_{s}}\)</span> the total number of sampled individuals.
 The (unknown) probability <span class="math inline">\(p_{s}\)</span> for an individual to belong to species <span class="math inline">\(s\)</span> is estimated by <span class="math inline">\({\hat{p}}_{s}={n_{s}}/{n}\)</span>.
-The number of species represented by <span class="math inline">\(\nu\)</span> individuals in the sample of size <span class="math inline">\(n\)</span> is <span class="math inline">\({s}^{n}_{\nu}\)</span>, so <span class="math inline">\({s}^{n}_{0}\)</span> if the (unknown) number of unobserved species considering the sampling effort.
-<span class="math inline">\({s}^{n}_{\nu}\)</span> is considered as a realization of the random variable <span class="math inline">\({S}^{n}_{\nu}\)</span> so it is used to estimate its expectation <span class="math inline">\({\mathbb E}({S}^{n}_{\nu})\)</span>.</p>
+The number of species represented by <span class="math inline">\(\nu\)</span> individuals in the sample of size <span class="math inline">\(n\)</span> is <span class="math inline">\({s}^{(n)}_{\nu}\)</span>, so <span class="math inline">\({s}^{(n)}_{0}\)</span> if the (unknown) number of unobserved species considering the sampling effort.
+<span class="math inline">\({s}^{(n)}_{\nu}\)</span> is considered as a realization of the random variable <span class="math inline">\({S}^{(n)}_{\nu}\)</span> so it is used to estimate its expectation <span class="math inline">\({\mathbb E}({S}^{(n)}_{\nu})\)</span>.</p>
 <p><span class="math inline">\(\pi_\nu\)</span> is the sum of the probabilities <span class="math inline">\(p_s\)</span> of species represented by <span class="math inline">\(\nu\)</span> individuals.</p>
 <p>The deformed logarithm formalism <span class="citation">(Tsallis 1994)</span> is very convenient to manipulate entropies.
 The deformed logarithm of order <span class="math inline">\(q\)</span> is defined as:</p>
@@ -347,12 +348,12 @@ It equals the sums of the probabilities of the observed species.
 It is an essential tool for diversity estimation because it is included in some estimators, e.g. <span class="citation">Chao and Shen (2003)</span>, and it allows the evaluation of the completeness of the sampling <span class="citation">(Chao and Jost 2012)</span>.
 Its estimator given by Good is:</p>
 <p><span class="math display" id="eq:CGood">\[\begin{equation}
-    \hat{C} = 1-\frac{{s}^{n}_{1}}{n}
+    \hat{C} = 1-\frac{{s}^{(n)}_{1}}{n}
   \tag{2.3}
 \end{equation}\]</span></p>
 <p>It is biased <span class="citation">(Zhang and Huang 2007)</span>, because:</p>
 <p><span class="math display" id="eq:CsansBiais">\[\begin{equation}
-  C = 1-\frac{{\mathbb E}({S}^{n}_{1}) - \pi_1}{n}
+  C = 1-\frac{{\mathbb E}({S}^{(n)}_{1}) - \pi_1}{n}
   \tag{2.4}
 \end{equation}\]</span></p>
 <p>Good’s estimator neglects the term <span class="math inline">\(\pi_1\)</span>, the sum of the probabilities of singletons.
@@ -360,13 +361,13 @@ It was built from Turing’s frequency formula relating the average probability 
 This formula has been improved by Chao <em>et al.</em> <span class="citation">(Chao and Shen 2010; Chiu et al. 2014)</span> to estimate <span class="math inline">\(\pi_1\)</span>.
 Estimating the number of species by the Chao1 estimator <span class="citation">(Chao 1984)</span>, <span class="citation">Chao and Shen (2010)</span> obtained an improved estimator of the sample coverage:</p>
 <p><span class="math display" id="eq:CChao">\[\begin{equation} 
-    \hat{C} = 1-\frac{{s}^{n}_{1}}{n}\left[\frac{\left(n-1\right){s}^{n}_{1}}{\left(n-1\right){s}^{n}_{1}+2{s}^{n}_{2}{}}\right]
+    \hat{C} = 1-\frac{{s}^{(n)}_{1}}{n}\left[\frac{\left(n-1\right){s}^{(n)}_{1}}{\left(n-1\right){s}^{(n)}_{1}+2{s}^{(n)}_{2}{}}\right]
   \tag{2.5}
 \end{equation}\]</span></p>
 <p>This estimator has been further used by <span class="citation">Chao and Jost (2015)</span> to derive an estimator of entropy (see below).</p>
 <p>An almost unbiased estimator has been derived using the information provided by the whole distribution <span class="citation">(Chao, Lee, and Chen 1988; Zhang and Huang 2007)</span>:</p>
 <p><span class="math display" id="eq:CZhang">\[\begin{equation}
-  \hat{C}=1-\sum^{n}_{\nu=1}{\left(-1\right)}^{\nu+1}{\binom{n}{\nu}}^{-1}{s}^{n}_{\nu}
+  \hat{C}=1-\sum_{\nu=1}^{n}{\left(-1\right)}^{\nu+1}{\binom{n}{\nu}}^{-1}{s}^{(n)}_{\nu}
   \tag{2.6}
 \end{equation}\]</span></p>
 <p>It is used in this paper.</p>
@@ -443,23 +444,23 @@ The most achieved one is that of <span class="citation">Chao and Jost (2015)</sp
 It relies on the estimation of the total number of species by the Chao1 estimator and a few approximations including that the actual probabilities of unobserved species can be assumed almost equal.
 A consequence is that the estimator of the average probability of species sampled once also equals the probability estimator of unobserved species.
 Its value is noted <span class="math inline">\(A\)</span>.
-It is <span class="math inline">\(2 {s}^{n}_{2} / {\left[\left( n-1 \right) {s}^{n}_{1} +2 {s}^{n}_{2} \right]}\)</span> if singletons and doubletons are present or <span class="math inline">\(2/{\left[\left(n-1\right)\left({s}^{n}_{1} -1\right)+2\right]}\)</span> if doubletons are missing.
+It is <span class="math inline">\(2 {s}^{(n)}_{2} / {\left[\left( n-1 \right) {s}^{(n)}_{1} +2 {s}^{(n)}_{2} \right]}\)</span> if singletons and doubletons are present or <span class="math inline">\(2/{\left[\left(n-1\right)\left({s}^{(n)}_{1} -1\right)+2\right]}\)</span> if doubletons are missing.
 The Chao-Jost estimator of HCDT entropy is:</p>
 <p><span class="math display">\[\begin{multline}
   ^{q}{\tilde{H}}
     = \frac{1}{q-1} [ 1 -\tilde{h}_q \\
-    -\frac{{s}^{n}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum^{n-1}_{r=0}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
+    -\frac{{s}^{(n)}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum_{r=0}^{n-1}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
 \end{multline}\]</span></p>
 <p>In absence of singletons and doubletons, <span class="math inline">\(A\)</span> is set to 1 and the estimator is identical to that of Zhang and Grabchak.</p>
 </div>
 <div id="confidence-intervals" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Confidence intervals</h2>
 <p>Two methods allow the evaluation of confidence intervals: asymptotic, closed forms are available for some estimators, or bootstrapping is required in the general case.</p>
-<p><span class="citation">Esty (1983)</span>, completed by <span class="citation">Zhang and Huang (2007)</span>, showed that the estimator of sample coverage (eq. <a href="#eq:CZhang">(2.6)</a> is asymptotically normal with the following confidence interval:</p>
+<p><span class="citation">Esty (1983)</span>, completed by <span class="citation">Zhang and Huang (2007)</span>, showed that the estimator of sample coverage (eq.<a href="#eq:CZhang">(2.6)</a> is asymptotically normal with the following confidence interval:</p>
 <p><span class="math display">\[\begin{equation}
-    C=\hat{C}\pm t^{n}_{1-\alpha/2} \frac{\sqrt{{s}^{n}_{1}\left(1-\frac{{s}^{n}_{1}}{n}\right)+2{s}^{n}_{2}}}{n} 
+    C=\hat{C}\pm t^{(n)}_{1-\alpha/2} \frac{\sqrt{{s}^{(n)}_{1}\left(1-\frac{{s}^{(n)}_{1}}{n}\right)+2{s}^{(n)}_{2}}}{n} 
 \end{equation}\]</span></p>
-<p>Where <span class="math inline">\(t^{n}_{1-\alpha/2}\)</span> is the quantile of a Student distribution with <span class="math inline">\(n\)</span> degrees of freedom at the risk threshold <span class="math inline">\(\alpha\)</span>, here 1.96 for all sample sizes and <span class="math inline">\(\alpha=5\%\)</span>.</p>
+<p>Where <span class="math inline">\(t^{(n)}_{1-\alpha/2}\)</span> is the quantile of a Student distribution with <span class="math inline">\(n\)</span> degrees of freedom at the risk threshold <span class="math inline">\(\alpha\)</span>, here 1.96 for all sample sizes and <span class="math inline">\(\alpha=5\%\)</span>.</p>
 <p>The Zhang-Grabchak estimator is also asymptotically normal and comes with an asymptotic confidence interval <span class="citation">(Zhang and Grabchak 2016)</span> implemented in the package <em>EntropyEstimation</em> <span class="citation">(Cao and Grabchak 2014)</span>.</p>
 <p>The theoretical distribution of other estimators is unknown.
 They must be built by bootstrap techniques: the observed community is re-sampled, say 1000 times, and entropy is calculated each time.
@@ -615,7 +616,7 @@ An extensive and rigorous analysis of the influence of the parameters of the the
 <p>The lower <span class="math inline">\(q\)</span>, the more difficult the estimation is, but the estimation of the number of species has been long studied and simple rules of decision have been proposed <span class="citation">(Burnham and Overton 1979; Brose, Martinez, and Williams 2003)</span> to choose the most appropriate order of the jackknife estimator.
 Burnham and Overton derived a selection procedure to obtain the order allowing to minimize the RMSE of the estimation of the number of species.
 It is implemented in the package <em>SPECIES</em> [<span class="citation">Wang (2011)</span>} for R.
-Brose <em>et al.</em> showed (empirically) hat the first-order jackknife is selected when the sample completeness <span class="citation">(terminology by J. Beck and Schwanghart 2010)</span>, i.e. the proportion of observed species <span class="math inline">\((S-{s}^{n}_{0})/S\)</span> is over 3/4 (precisely 74% in their paper).
+Brose <em>et al.</em> showed (empirically) hat the first-order jackknife is selected when the sample completeness <span class="citation">(terminology by J. Beck and Schwanghart 2010)</span>, i.e. the proportion of observed species <span class="math inline">\((S-{s}^{(n)}_{0})/S\)</span> is over 3/4 (precisely 74% in their paper).
 When it is less, higher orders have less bias but more variance.
 It is easy to estimate the number of species of an actual sample this way and compare it to the Chao1 estimator.
 If both coincide, the Chao-Jost estimator will perform well for the whole profile: its value at <span class="math inline">\(q=0\)</span> is that of Chao1.
@@ -626,7 +627,7 @@ If one does not want to rely on the jackknife estimator for some reason, such as
 <h2><span class="header-section-number">4.4</span> Better, but probably not much better, estimators may be derived</h2>
 <p>The most promising ways of research according to the present results are a better estimation of the remaining bias of the Zhang-Grabchak estimator and the improvement of the distribution modeling of the unveiled estimators.
 The first approach is that of the Chao-Jost estimator, which is limited by its estimation of the number of species (the lower bound, Chao1 estimator).
-The price for releasing this constraint is losing the elegant, closed form of the estimator allowed by appropriate approximations of the infinite sum of the unknown elements of eq. <a href="#eq:hq">(2.9)</a> for a numeric approximation.</p>
+The price for releasing this constraint is losing the elegant, closed form of the estimator allowed by appropriate approximations of the infinite sum of the unknown elements of eq.<a href="#eq:hq">(2.9)</a> for a numeric approximation.</p>
 <p>The distribution of species is modeled with two parameters in the unveiled estimators.
 This can be refined by extending the technique presented by <span class="citation">Chao et al. (2015)</span> to higher orders of sample coverage.
 In both cases, better fitting the data to reduce the bias has its limits because the variance of estimation is likely to increase <span class="citation">(Bonachela, Hinrichsen, and Muñoz 2008)</span>.
