@@ -30,14 +30,14 @@ toc-depth: 3
 fontsize: 10pt
 always_allow_html: yes
 output:
+  bookdown::html_document2:
+    toc: yes
+    toc_float: yes
   bookdown::pdf_book:
     template: latex/template.tex
     citation_package: natbib
     latex_engine: xelatex
     keep_tex: yes
-  bookdown::html_document2:
-    toc: yes
-    toc_float: yes
 ---
 
 ```{r DoNotModify, include=FALSE}
@@ -210,7 +210,7 @@ This estimator has been further used by @Chao2015 to derive an estimator of entr
 An almost unbiased estimator has been derived using the information provided by the whole distribution [@Chao1988;@Zhang2007]:
 
 \begin{equation}
-  \hat{C}=1-\sum^{(n)}_{\nu=1}{\left(-1\right)}^{\nu+1}{\binom{n}{\nu}}^{-1}{s}^{(n)}_{\nu}
+  \hat{C}=1-\sum_{\nu=1}^{n}{\left(-1\right)}^{\nu+1}{\binom{n}{\nu}}^{-1}{s}^{(n)}_{\nu}
   (\#eq:CZhang)
 \end{equation}
 
@@ -314,7 +314,7 @@ The Chao-Jost estimator of HCDT entropy is:
 \begin{multline}
   ^{q}{\tilde{H}}
     = \frac{1}{q-1} [ 1 -\tilde{h}_q \\
-    -\frac{{s}^{(n)}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum^{n-1}_{r=0}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
+    -\frac{{s}^{(n)}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum_{r=0}^{n-1}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
 \end{multline}
 
 In absence of singletons and doubletons, $A$ is set to 1 and the estimator is identical to that of Zhang and Grabchak.
