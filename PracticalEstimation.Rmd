@@ -153,8 +153,8 @@ This paper comes with a Shiny application available on GitHub[^1] to simulate co
 Consider a community of species indexed by $s$. 
 $n_{s}$ is the number of individuals of species $s$ sampled in the community, $n=\sum_s{n_{s}}$ the total number of sampled individuals. 
 The (unknown) probability $p_{s}$ for an individual to belong to species $s$ is estimated by ${\hat{p}}_{s}={n_{s}}/{n}$.
-The number of species represented by $\nu$ individuals in the sample of size $n$ is ${s}^{n}_{\nu}$, so ${s}^{n}_{0}$ if the (unknown) number of unobserved species considering the sampling effort.
-${s}^{n}_{\nu}$ is considered as a realization of the random variable ${S}^{n}_{\nu}$ so it is used to estimate its expectation ${\mathbb E}({S}^{n}_{\nu})$.
+The number of species represented by $\nu$ individuals in the sample of size $n$ is ${s}^{(n)}_{\nu}$, so ${s}^{(n)}_{0}$ if the (unknown) number of unobserved species considering the sampling effort.
+${s}^{(n)}_{\nu}$ is considered as a realization of the random variable ${S}^{(n)}_{\nu}$ so it is used to estimate its expectation ${\mathbb E}({S}^{(n)}_{\nu})$.
 
 $\pi_\nu$ is the sum of the probabilities $p_s$ of species represented by $\nu$ individuals.
 
@@ -184,14 +184,14 @@ It is an essential tool for diversity estimation because it is included in some 
 Its estimator given by Good is:
 
 \begin{equation}
-	\hat{C} = 1-\frac{{s}^{n}_{1}}{n}
+	\hat{C} = 1-\frac{{s}^{(n)}_{1}}{n}
   (\#eq:CGood)
 \end{equation}
 
 It is biased [@Zhang2007], because:
 
 \begin{equation}
-  C = 1-\frac{{\mathbb E}({S}^{n}_{1}) - \pi_1}{n}
+  C = 1-\frac{{\mathbb E}({S}^{(n)}_{1}) - \pi_1}{n}
   (\#eq:CsansBiais)
 \end{equation}
 
@@ -201,7 +201,7 @@ This formula has been improved by Chao *et al.* [@Chao2010a;@Chiu2014a] to estim
 Estimating the number of species by the Chao1 estimator [@Chao1984], @Chao2010a obtained an improved estimator of the sample coverage:
 
 \begin{equation} 
-	\hat{C} = 1-\frac{{s}^{n}_{1}}{n}\left[\frac{\left(n-1\right){s}^{n}_{1}}{\left(n-1\right){s}^{n}_{1}+2{s}^{n}_{2}{}}\right]
+	\hat{C} = 1-\frac{{s}^{(n)}_{1}}{n}\left[\frac{\left(n-1\right){s}^{(n)}_{1}}{\left(n-1\right){s}^{(n)}_{1}+2{s}^{(n)}_{2}{}}\right]
   (\#eq:CChao)
 \end{equation}
 
@@ -210,7 +210,7 @@ This estimator has been further used by @Chao2015 to derive an estimator of entr
 An almost unbiased estimator has been derived using the information provided by the whole distribution [@Chao1988;@Zhang2007]:
 
 \begin{equation}
-  \hat{C}=1-\sum^{n}_{\nu=1}{\left(-1\right)}^{\nu+1}{\binom{n}{\nu}}^{-1}{s}^{n}_{\nu}
+  \hat{C}=1-\sum^{(n)}_{\nu=1}{\left(-1\right)}^{\nu+1}{\binom{n}{\nu}}^{-1}{s}^{(n)}_{\nu}
   (\#eq:CZhang)
 \end{equation}
 
@@ -308,13 +308,13 @@ The most achieved one is that of @Chao2015, completing @Chao2013.
 It relies on the estimation of the total number of species by the Chao1 estimator and a few approximations including that the actual probabilities of unobserved species can be assumed almost equal.
 A consequence is that the estimator of the average probability of species sampled once also equals the probability estimator of unobserved species. 
 Its value is noted $A$. 
-It is $2 {s}^{n}_{2} / {\left[\left( n-1 \right) {s}^{n}_{1} +2 {s}^{n}_{2} \right]}$ if singletons and doubletons are present or $2/{\left[\left(n-1\right)\left({s}^{n}_{1} -1\right)+2\right]}$ if doubletons are missing.
+It is $2 {s}^{(n)}_{2} / {\left[\left( n-1 \right) {s}^{(n)}_{1} +2 {s}^{(n)}_{2} \right]}$ if singletons and doubletons are present or $2/{\left[\left(n-1\right)\left({s}^{(n)}_{1} -1\right)+2\right]}$ if doubletons are missing.
 The Chao-Jost estimator of HCDT entropy is:
 
 \begin{multline}
   ^{q}{\tilde{H}}
     = \frac{1}{q-1} [ 1 -\tilde{h}_q \\
-    -\frac{{s}^{n}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum^{n-1}_{r=0}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
+    -\frac{{s}^{(n)}_{1}}{n} {\left( 1-A \right)}^{1-n} \left( A^{q-1} -\sum^{n-1}_{r=0}{\binom{q-1}{r} {\left(A-1\right)}^r} \right) ]
 \end{multline}
 
 In absence of singletons and doubletons, $A$ is set to 1 and the estimator is identical to that of Zhang and Grabchak.
@@ -324,13 +324,13 @@ In absence of singletons and doubletons, $A$ is set to 1 and the estimator is id
 
 Two methods allow the evaluation of confidence intervals: asymptotic, closed forms are available for some estimators, or bootstrapping is required in the general case.
 
-@Esty1983, completed by @Zhang2007, showed that the estimator of sample coverage (eq. \@ref(eq:CZhang) is asymptotically normal with the following confidence interval:
+@Esty1983, completed by @Zhang2007, showed that the estimator of sample coverage (eq.\@ref(eq:CZhang) is asymptotically normal with the following confidence interval:
 
 \begin{equation}
-	C=\hat{C}\pm t^{n}_{1-\alpha/2} \frac{\sqrt{{s}^{n}_{1}\left(1-\frac{{s}^{n}_{1}}{n}\right)+2{s}^{n}_{2}}}{n} 
+	C=\hat{C}\pm t^{(n)}_{1-\alpha/2} \frac{\sqrt{{s}^{(n)}_{1}\left(1-\frac{{s}^{(n)}_{1}}{n}\right)+2{s}^{(n)}_{2}}}{n} 
 \end{equation}
 
-Where $t^{n}_{1-\alpha/2}$ is the quantile of a Student distribution with $n$ degrees of freedom at the risk threshold $\alpha$, here 1.96 for all sample sizes and $\alpha=5\%$.
+Where $t^{(n)}_{1-\alpha/2}$ is the quantile of a Student distribution with $n$ degrees of freedom at the risk threshold $\alpha$, here 1.96 for all sample sizes and $\alpha=5\%$.
 
 The Zhang-Grabchak estimator is also asymptotically normal and comes with an asymptotic confidence interval [@Zhang2014] implemented in the package *EntropyEstimation* [@Cao2014].
 
@@ -458,7 +458,7 @@ Sample sizes are between 200 and 5000 individuals to cover a range from obvious 
 ## Sample coverage
 
 (ref:CAll) Estimated vs real sample coverage of simulated samples of a lognormal (a) or geometric (b) distribution of 300 species. Sample sizes are between 200 and 5000 individuals. The line represents the fit of a model II (Major Axis method) linear regression. a) Lognormal distribution: The estimated sample coverage is 0.991 times the real one plus 0.009, with an $R^2$ value around 94%. b) Geometric distribution: The estimated sample coverage is 1.046 times the real one minus 0.046, with an $R^2$ value around 69%.
-```{r CAll, fig.cap="(ref:CAll)", fig.env='figure*', out.width = '', fig.asp=.5}
+```{r CAll, fig.cap="(ref:CAll)", fig.env='figure*', out.extra="", fig.asp=.5}
 library("gridExtra")
 
 # Compare Estimated and actual sample coverages
@@ -572,7 +572,7 @@ The general pattern is a poor estimation of low orders of diversity, and a quite
 The RMSE varies a lot according to the model.
 
 (ref:RMSE) Estimated relative RMSE of the estimators of diversity based on 1000 samples of 1000 individuals of each typical distribution: lognormal (a) and geometric (b) of 300 species. The RMSE is normalized by the actual diversity. It is quite high for low orders of diversity, especially for the geometric distribution. Values of $q$ over 0.6 are not shown because all estimators perform similarly well. The legend lists the estimators in the increasing order of RMSE for $q>0.1$, where the estimator with the lowest RMSE is the jackknife-unveiled one, closely followed by the iChao-unveiled and Chao-Jost. Close to $q=0$, the jackknife-unveiled estimator has a higher variance making it the least reliable estimator.
-```{r RMSE, fig.cap="(ref:RMSE)", fig.env='figure*', out.width = '', fig.asp=.4}
+```{r RMSE, fig.cap="(ref:RMSE)", fig.env='figure*', out.extra="", fig.asp=.4}
 # Lognormal
 RMSE <- tibble(q=q.seq)
 for (Correction in Corrections) {
@@ -684,7 +684,7 @@ An extensive and rigorous analysis of the influence of the parameters of the the
 The lower $q$, the more difficult the estimation is, but the estimation of the number of species has been long studied and simple rules of decision have been proposed [@Burnham1979;@Brose2003] to choose the most appropriate order of the jackknife estimator.
 Burnham and Overton derived a selection procedure to obtain the order allowing to minimize the RMSE of the estimation of the number of species. 
 It is implemented in the package *SPECIES* [@Wang2011} for R.
-Brose *et al.* showed (empirically) hat the first-order jackknife is selected when the sample completeness [terminology by @Beck2010], i.e. the proportion of observed species $(S-{s}^{n}_{0})/S$ is over 3/4 (precisely 74% in their paper).
+Brose *et al.* showed (empirically) hat the first-order jackknife is selected when the sample completeness [terminology by @Beck2010], i.e. the proportion of observed species $(S-{s}^{(n)}_{0})/S$ is over 3/4 (precisely 74% in their paper).
 When it is less, higher orders have less bias but more variance.
 It is easy to estimate the number of species of an actual sample this way and compare it to the Chao1 estimator.
 If both coincide, the Chao-Jost estimator will perform well for the whole profile: its value at $q=0$ is that of Chao1.
@@ -696,7 +696,7 @@ If one does not want to rely on the jackknife estimator for some reason, such as
 
 The most promising ways of research according to the present results are a better estimation of the remaining bias of the Zhang-Grabchak estimator and the improvement of the distribution modeling of the unveiled estimators.
 The first approach is that of the Chao-Jost estimator, which is limited by its estimation of the number of species (the lower bound, Chao1 estimator).
-The price for releasing this constraint is losing the elegant, closed form of the estimator allowed by appropriate approximations of the infinite sum of the unknown elements of eq. \@ref(eq:hq) for a numeric approximation.
+The price for releasing this constraint is losing the elegant, closed form of the estimator allowed by appropriate approximations of the infinite sum of the unknown elements of eq.\@ref(eq:hq) for a numeric approximation.
 
 The distribution of species is modeled with two parameters in the unveiled estimators.
 This can be refined by extending the technique presented by @Chao2014c to higher orders of sample coverage.
